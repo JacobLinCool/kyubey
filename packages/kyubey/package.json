@@ -4,7 +4,13 @@
 	"version": "1.0.0-dev.0",
 	"author": "JacobLinCool <jacoblincool@gmail.com> (https://jacoblin.cool)",
 	"license": "MIT",
-	"keywords": [],
+	"keywords": [
+		"kyubey",
+		"qb",
+		"cli",
+		"lib",
+		"automation"
+	],
 	"type": "module",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
