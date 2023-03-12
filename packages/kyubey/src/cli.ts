@@ -11,6 +11,12 @@ program
 	.version(pkg.version)
 	.option("-i, --interactive", "Run Kyubey in interactive mode", false)
 	.option("-u, --usage", "Print token usage after the task is done", false)
+	.option("-s, --summary", "Length threshold to summarize terminal output", Number, 100)
+	.option(
+		"-k, --key",
+		"API Key to use for OpenAI API (overrides env var OPENAI_API_KEY)",
+		undefined,
+	)
 	.argument("<prompt...>", "Ask Kyubey to do something")
 	.action(
 		async (
@@ -18,11 +24,16 @@ program
 			opt: {
 				interactive: boolean;
 				usage: boolean;
+				summary: number;
+				key?: string;
 			},
 		) => {
 			const task = prompt.map((x) => x.trim()).join(" ");
 
-			const qb = new QB(task);
+			const qb = new QB(task, {
+				summary_threshold: opt.summary,
+				key: opt.key,
+			});
 			while (!qb.done) {
 				const suggestion = await qb.next();
 
@@ -30,6 +41,7 @@ program
 					console.error(
 						chalk.redBright("Kyubey doesn't know what to do :("),
 						chalk.yellowBright(suggestion.command),
+						opt.usage ? chalk.yellowBright(`(Used ${qb.usage} tokens)`) : "",
 					);
 					break;
 				}
@@ -69,7 +81,10 @@ program
 					]);
 
 					if (action === "no") {
-						console.log(chalk.redBright("You don't want Kyubey to do that :("));
+						console.log(
+							chalk.redBright("You don't want Kyubey to do that :("),
+							opt.usage ? chalk.yellowBright(`(Used ${qb.usage} tokens)`) : "",
+						);
 						break;
 					}
 

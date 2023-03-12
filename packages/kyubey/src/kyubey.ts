@@ -25,8 +25,9 @@ export class Kyubey extends EventEmitter {
 	protected api: OpenAIApi;
 	protected messages: ChatCompletionRequestMessage[];
 	protected cwd: string;
+	protected summary_threshold: number;
 
-	constructor(task: string, opt?: { key?: string }) {
+	constructor(task: string, opt?: { key?: string; summary_threshold?: number }) {
 		super();
 		this.task = task;
 		this.ready = Promise.resolve();
@@ -37,6 +38,7 @@ export class Kyubey extends EventEmitter {
 		this.api = new OpenAIApi(config);
 		this.messages = [];
 		this.cwd = process.cwd();
+		this.summary_threshold = opt?.summary_threshold ?? 100;
 	}
 
 	async next(): Promise<Suggestion> {
@@ -94,7 +96,7 @@ export class Kyubey extends EventEmitter {
 			const result = await this.api.createChatCompletion({
 				model: "gpt-3.5-turbo",
 				messages: this.messages,
-				temperature: 0.1,
+				temperature: 0,
 				max_tokens: 512,
 			});
 
@@ -128,6 +130,11 @@ export class Kyubey extends EventEmitter {
 			const err = error as ExecaReturnBase<string>;
 			out = err.stderr.trim() || err.stdout.trim();
 			code = err.exitCode;
+		}
+
+		if (out.length > this.summary_threshold) {
+			log("[original terminal]", out);
+			out = `(output summarized: ${await this.summarize(out)})`;
 		}
 
 		this.messages.push(
@@ -173,6 +180,36 @@ export class Kyubey extends EventEmitter {
 		}
 
 		return { done: false, command: content, unknown: true };
+	}
+
+	protected async summarize(output: string): Promise<string> {
+		await this.ready;
+
+		const promise = (async () => {
+			const result = await this.api.createChatCompletion({
+				model: "gpt-3.5-turbo",
+				messages: [
+					{ role: "user", content: `Summarize terminal output in 16 words:\n${output}` },
+				],
+				temperature: 0.05,
+				max_tokens: 128,
+			});
+
+			if (result.data.usage?.total_tokens) {
+				this.usage += result.data.usage.total_tokens;
+				token_log(result.data.usage.total_tokens);
+			}
+
+			const response = result.data.choices[0].message;
+			if (response) {
+				return response.content.trim();
+			}
+
+			throw new Error("No response");
+		})();
+
+		this.ready = promise;
+		return promise;
 	}
 }
 
