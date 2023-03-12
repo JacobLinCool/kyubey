@@ -47,7 +47,7 @@ program
 				console.log("Kyubey suggests to run", chalk.yellowBright(suggestion.command));
 				const result = await suggestion.run?.();
 				if (result) {
-					console.log("Result:", chalk.cyanBright(result));
+					console.log(chalk.cyanBright(result));
 				}
 			}
 		},

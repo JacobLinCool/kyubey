@@ -1,7 +1,8 @@
 import EventEmitter from "node:events";
 import path from "node:path";
 import debug from "debug";
-import { execaCommand } from "execa";
+import { commandSync } from "execa";
+import type { ExecaReturnBase } from "execa";
 import {
 	ChatCompletionRequestMessage,
 	ChatCompletionResponseMessage,
@@ -107,17 +108,25 @@ export class Kyubey extends EventEmitter {
 	}
 
 	protected async exec(command: string): Promise<string> {
-		const result = await execaCommand(command, { shell: true, cwd: this.cwd }).catch((e) => e);
-		const out = result.failed
-			? result.stderr.trim() || result.stdout.trim()
-			: result.stdout.trim() || result.stderr.trim();
+		let out: string;
+		let code: number;
+
+		try {
+			const result = commandSync(command, { shell: true, cwd: this.cwd });
+			out = result.stdout.trim() || result.stderr.trim();
+			code = result.exitCode;
+		} catch (error) {
+			const err = error as ExecaReturnBase<string>;
+			out = err.stderr.trim() || err.stdout.trim();
+			code = err.exitCode;
+		}
 
 		this.messages.push(
 			{ role: "assistant", content: `[run] ${command}` },
-			{ role: "user", content: `[terminal] code ${result.exitCode}, ${out}` },
+			{ role: "user", content: `[terminal] code ${code}, ${out}` },
 		);
 		log("[run]", command, this.cwd);
-		log("[terminal]", `code ${result.exitCode}, ${out}`);
+		log("[terminal]", `code ${code}, ${out}`);
 
 		const commands = command.split("&&").map((c) => c.trim());
 		for (const c of commands) {
