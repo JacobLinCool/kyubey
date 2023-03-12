@@ -48,7 +48,11 @@ program
 
 				if (suggestion.done) {
 					console.log(
-						chalk.greenBright("Kyubey thinks the task is done! ／人◕ ‿‿ ◕人＼"),
+						chalk.greenBright(
+							suggestion.command
+								? `／人◕ ‿‿ ◕人＼: ${suggestion.command}`
+								: "Kyubey thinks the task is done! ／人◕ ‿‿ ◕人＼",
+						),
 						opt.usage ? chalk.yellowBright(`(Used ${qb.usage} tokens)`) : "",
 					);
 					break;

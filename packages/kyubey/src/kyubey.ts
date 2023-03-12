@@ -160,7 +160,7 @@ export class Kyubey extends EventEmitter {
 		log.extend("response")(content);
 
 		if (content.startsWith("[done]")) {
-			return { done: true, command: "" };
+			return { done: true, command: content.slice(6).trim() };
 		}
 
 		const commands = content
