@@ -8,6 +8,7 @@
 
 - [x] Automatic Mode or Interactive Mode (`-i`)
 - [x] Long task with summarized terminal output
+- [x] Answer question about repository / directory
 - [ ] ~~Make you become a Magical Girl~~
 
 ## Installation
@@ -35,3 +36,7 @@ qb "do something"
 ### Interactive Mode
 
 ![interactive mode demo](https://i.imgur.com/bN4jI79.gif)
+
+### Ask Question about Repository
+
+![ask question about repository](https://i.imgur.com/fyDO8QO.gif)
