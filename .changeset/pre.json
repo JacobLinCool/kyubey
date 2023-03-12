@@ -4,5 +4,11 @@
 	"initialVersions": {
 		"kyubey": "0.0.0"
 	},
-	"changesets": ["four-kiwis-jog"]
+	"changesets": [
+		"eight-suits-march",
+		"four-kiwis-jog",
+		"gold-insects-lie",
+		"loud-mugs-lie",
+		"tough-bulldogs-care"
+	]
 }
