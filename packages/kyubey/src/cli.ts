@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import chalk from "chalk";
 import { program } from "commander";
+import prompts from "prompts";
 import { QB } from "./kyubey";
 import { pkg } from "./pkg";
 
@@ -39,12 +40,50 @@ program
 				}
 
 				if (opt.interactive) {
-					// ask to run or break;
-					console.error(chalk.redBright("Interactive mode is not implemented yet :("));
-					break;
+					const { action } = await prompts([
+						{
+							type: "select",
+							name: "action",
+							message: `Kyubey wants to run ${chalk.yellowBright(
+								suggestion.command,
+							)}?`,
+							choices: [
+								{
+									title: "Yes",
+									value: "yes",
+									selected: true,
+								},
+								{
+									title: "No, I want to edit",
+									value: "edit",
+								},
+								{
+									title: "No, just stop",
+									value: "no",
+								},
+							],
+						},
+					]);
+
+					if (action === "no") {
+						console.log(chalk.redBright("You don't want Kyubey to do that :("));
+						break;
+					}
+
+					if (action === "edit") {
+						const { edit } = await prompts([
+							{
+								type: "text",
+								name: "edit",
+								message: "What do you want Kyubey to do?",
+								initial: suggestion.command,
+							},
+						]);
+						suggestion.command = edit;
+					}
 				}
 
-				console.log("Kyubey suggests to run", chalk.yellowBright(suggestion.command));
+				console.log("Kyubey runs", chalk.yellowBright(suggestion.command));
 				const result = await suggestion.run?.();
 				if (result) {
 					console.log(chalk.cyanBright(result));

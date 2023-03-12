@@ -38,12 +38,14 @@ importers:
     packages/kyubey:
         specifiers:
             "@types/debug": ^4.1.7
+            "@types/prompts": ^2.4.3
             chalk: ^4.1.2
             commander: ^10.0.0
             debug: ^4.3.4
             dotenv: ^16.0.3
             execa: ^5.1.1
             openai: ^3.2.1
+            prompts: ^2.4.2
             tsup: ^6.6.3
             typedoc: ^0.23.26
             typescript: ^4.9.5
@@ -54,8 +56,10 @@ importers:
             dotenv: 16.0.3
             execa: 5.1.1
             openai: 3.2.1_debug@4.3.4
+            prompts: 2.4.2
         devDependencies:
             "@types/debug": 4.1.7
+            "@types/prompts": 2.4.3
             tsup: 6.6.3_typescript@4.9.5
             typedoc: 0.23.26_typescript@4.9.5
             typescript: 4.9.5
@@ -1762,6 +1766,16 @@ packages:
             {
                 integrity: sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==,
             }
+        dev: true
+
+    /@types/prompts/2.4.3:
+        resolution:
+            {
+                integrity: sha512-qpzXlxoPv67TCtTCS+SwYmz1M+G5ARTrE5YVlrZPy/xBD36dzLqiJLDzOzsMXkcJYq6+6UkWqFwtLAOjsfec5Q==,
+            }
+        dependencies:
+            "@types/node": 18.15.0
+            kleur: 3.0.3
         dev: true
 
     /@types/semver/6.2.3:
@@ -4979,7 +4993,6 @@ packages:
                 integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==,
             }
         engines: { node: ">=6" }
-        dev: true
 
     /kleur/4.1.5:
         resolution:
@@ -5856,7 +5869,6 @@ packages:
         dependencies:
             kleur: 3.0.3
             sisteransi: 1.0.5
-        dev: true
 
     /pseudomap/1.0.2:
         resolution:
@@ -6317,7 +6329,6 @@ packages:
             {
                 integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==,
             }
-        dev: true
 
     /slash/3.0.0:
         resolution:

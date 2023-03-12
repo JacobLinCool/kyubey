@@ -153,7 +153,14 @@ export class Kyubey extends EventEmitter {
 			.filter((line) => line.startsWith("[run]"));
 		if (commands.length > 0) {
 			const command = commands.map((line) => line.slice(5).trim()).join(" && ");
-			return { done: false, command, run: () => this.exec(command) };
+			const exec = this.exec.bind(this);
+			return {
+				done: false,
+				command,
+				run: function () {
+					return exec(this.command);
+				},
+			};
 		}
 
 		return { done: false, command: content, unknown: true };
