@@ -30,7 +30,7 @@
 		"commander": "^10.0.0",
 		"debug": "^4.3.4",
 		"dotenv": "^16.0.3",
-		"execa": "^5.1.1",
+		"execa": "^7.0.0",
 		"openai": "^3.2.1"
 	},
 	"devDependencies": {
