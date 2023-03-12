@@ -31,10 +31,10 @@ function recursive_config(dir: string): void {
 	const path = `${dir}/.env`;
 	try {
 		config({ path });
-	} catch (e) {
-		const parent = dir.split("/").slice(0, -1).join("/");
-		if (parent !== dir) {
-			recursive_config(parent);
-		}
+	} catch {}
+
+	const parent = dir.split("/").slice(0, -1).join("/");
+	if (parent !== dir) {
+		recursive_config(parent);
 	}
 }
