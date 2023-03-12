@@ -1,0 +1,48 @@
+{
+	"name": "kyubey",
+	"description": "Just make a contract with me, and become a Magical Girl! 僕と契約して、魔法少女になってよ!",
+	"version": "0.0.0",
+	"author": "JacobLinCool <jacoblincool@gmail.com> (https://jacoblin.cool)",
+	"license": "MIT",
+	"keywords": [],
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"bin": {
+		"kyubey": "dist/cli.js",
+		"qb": "dist/cli.js"
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"start": "tsx src/cli.ts",
+		"build": "tsup",
+		"build:docs": "typedoc --out docs src"
+	},
+	"dependencies": {
+		"chalk": "^5.2.0",
+		"commander": "^10.0.0",
+		"debug": "^4.3.4",
+		"dotenv": "^16.0.3",
+		"execa": "^7.1.0",
+		"openai": "^3.2.1"
+	},
+	"devDependencies": {
+		"@types/debug": "^4.1.7",
+		"tsup": "^6.6.3",
+		"typedoc": "^0.23.26",
+		"typescript": "^4.9.5"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/JacobLinCool/kyubey.git"
+	},
+	"bugs": {
+		"url": "https://github.com/JacobLinCool/kyubey/issues"
+	},
+	"homepage": "https://jacoblincool.github.io/kyubey",
+	"typedoc": {
+		"entryPoint": "./src/index.ts"
+	}
+}
