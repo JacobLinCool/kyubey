@@ -10,12 +10,14 @@ program
 	.description(pkg.description)
 	.version(pkg.version)
 	.option("-i, --interactive", "Run Kyubey in interactive mode", false)
+	.option("-u, --usage", "Print token usage after the task is done", false)
 	.argument("<prompt...>", "Ask Kyubey to do something")
 	.action(
 		async (
 			prompt: string[],
 			opt: {
 				interactive: boolean;
+				usage: boolean;
 			},
 		) => {
 			const task = prompt.map((x) => x.trim()).join(" ");
@@ -35,6 +37,7 @@ program
 				if (suggestion.done) {
 					console.log(
 						chalk.greenBright("Kyubey thinks the task is done! ／人◕ ‿‿ ◕人＼"),
+						opt.usage ? chalk.yellowBright(`(Used ${qb.usage} tokens)`) : "",
 					);
 					break;
 				}

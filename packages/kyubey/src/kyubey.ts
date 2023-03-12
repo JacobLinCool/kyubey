@@ -14,12 +14,14 @@ import { OPENAI_API_KEY } from "./key";
 import { Suggestion } from "./types";
 
 const log = debug("kyubey");
+const token_log = log.extend("token");
 
 /** Summon a new Kyubey ／人◕ ‿‿ ◕人＼ */
 export class Kyubey extends EventEmitter {
 	public task: string;
 	public ready: Promise<unknown>;
 	public done: boolean;
+	public usage: number;
 	protected api: OpenAIApi;
 	protected messages: ChatCompletionRequestMessage[];
 	protected cwd: string;
@@ -29,6 +31,7 @@ export class Kyubey extends EventEmitter {
 		this.task = task;
 		this.ready = Promise.resolve();
 		this.done = false;
+		this.usage = 0;
 
 		const config = new Configuration({ apiKey: OPENAI_API_KEY(opt?.key) });
 		this.api = new OpenAIApi(config);
@@ -55,7 +58,10 @@ export class Kyubey extends EventEmitter {
 				max_tokens: 512,
 			});
 
-			log.extend("token")(result.data.usage?.total_tokens);
+			if (result.data.usage?.total_tokens) {
+				this.usage += result.data.usage.total_tokens;
+				token_log(result.data.usage.total_tokens);
+			}
 
 			const response = result.data.choices[0].message;
 			if (response) {
@@ -92,7 +98,10 @@ export class Kyubey extends EventEmitter {
 				max_tokens: 512,
 			});
 
-			log.extend("token")(result.data.usage?.total_tokens);
+			if (result.data.usage?.total_tokens) {
+				this.usage += result.data.usage.total_tokens;
+				token_log(result.data.usage.total_tokens);
+			}
 
 			const response = result.data.choices[0].message;
 			if (response) {
