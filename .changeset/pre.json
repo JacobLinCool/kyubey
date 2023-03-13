@@ -5,12 +5,14 @@
 		"kyubey": "0.0.0"
 	},
 	"changesets": [
+		"angry-ravens-rule",
 		"eight-suits-march",
 		"four-kiwis-jog",
 		"gold-insects-lie",
 		"loud-mugs-lie",
 		"rude-flies-repair",
 		"silver-pumas-complain",
+		"spotty-starfishes-own",
 		"tough-bulldogs-care"
 	]
 }
