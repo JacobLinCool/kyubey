@@ -186,6 +186,10 @@ export class Kyubey extends EventEmitter {
 		await this.ready;
 
 		const promise = (async () => {
+			if (output.length > 4096) {
+				return "output too long";
+			}
+
 			const result = await this.api.createChatCompletion({
 				model: "gpt-3.5-turbo",
 				messages: [

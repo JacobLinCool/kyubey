@@ -11,7 +11,12 @@ program
 	.version(pkg.version)
 	.option("-i, --interactive", "Run Kyubey in interactive mode", false)
 	.option("-u, --usage", "Print token usage after the task is done", false)
-	.option("-s, --summary", "Length threshold to summarize terminal output", Number, 100)
+	.option(
+		"-s, --summary <threshold>",
+		"Length threshold to summarize terminal output",
+		Number,
+		100,
+	)
 	.option(
 		"-k, --key",
 		"API Key to use for OpenAI API (overrides env var OPENAI_API_KEY)",
