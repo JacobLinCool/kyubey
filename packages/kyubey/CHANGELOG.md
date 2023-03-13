@@ -1,5 +1,15 @@
 # kyubey
 
+## 1.0.0-dev.3
+
+### Minor Changes
+
+-   [`2973ec4`](https://github.com/JacobLinCool/kyubey/commit/2973ec4346817bea2be77b8b15f41f1ee2e8ffe7) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Plan mode
+
+### Patch Changes
+
+-   [`9897457`](https://github.com/JacobLinCool/kyubey/commit/9897457c0629430fa6f1b7fcda09a1e9b200294e) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Fix summary threshold option
+
 ## 1.0.0-dev.2
 
 ### Minor Changes
