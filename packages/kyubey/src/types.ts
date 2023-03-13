@@ -11,3 +11,8 @@ export interface Suggestion {
 	/** Let Kyubey to run the command */
 	run?: () => Promise<string>;
 }
+
+export type Plan = {
+	command: string;
+	description: string;
+}[];

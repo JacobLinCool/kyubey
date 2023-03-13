@@ -117,6 +117,40 @@ program
 				}
 			}
 		},
+	)
+	.enablePositionalOptions();
+
+program
+	.command("plan <prompt...>")
+	.option("-u, --usage", "Print token usage after the task is done", false)
+	.option(
+		"-k, --key",
+		"API Key to use for OpenAI API (overrides env var OPENAI_API_KEY)",
+		undefined,
+	)
+	.action(
+		async (
+			prompt: string[],
+			opt: {
+				usage: boolean;
+				key?: string;
+			},
+		) => {
+			const task = prompt.map((x) => x.trim()).join(" ");
+			const qb = new QB(task, { key: opt.key });
+			const plan = await qb.plan();
+
+			for (let i = 0; i < plan.length; i++) {
+				console.log(
+					`${i + 1}.`,
+					chalk.yellowBright(plan[i].command),
+					chalk.gray(`(${plan[i].description})`),
+				);
+			}
+			if (opt.usage) {
+				console.log(chalk.magentaBright(`Used ${qb.usage} tokens`));
+			}
+		},
 	);
 
 program.parse();

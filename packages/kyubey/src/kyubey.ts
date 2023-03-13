@@ -9,9 +9,9 @@ import {
 	Configuration,
 	OpenAIApi,
 } from "openai";
-import { SYSTEM_PROMPT } from "./constants";
+import { SYSTEM_PLAN_PROMPT, SYSTEM_PROMPT } from "./constants";
 import { OPENAI_API_KEY } from "./key";
-import { Suggestion } from "./types";
+import type { Plan, Suggestion } from "./types";
 
 const log = debug("kyubey");
 const token_log = log.extend("token");
@@ -109,6 +109,54 @@ export class Kyubey extends EventEmitter {
 			if (response) {
 				this.messages.push(response);
 				return this.to_suggestion(response);
+			}
+
+			throw new Error("No response");
+		})();
+
+		this.ready = promise;
+		return promise;
+	}
+
+	async plan(): Promise<Plan> {
+		await this.ready;
+
+		const promise = (async () => {
+			const result = await this.api.createChatCompletion({
+				model: "gpt-3.5-turbo",
+				messages: [
+					{ role: "user", content: SYSTEM_PLAN_PROMPT },
+					{ role: "assistant", content: "Ok" },
+					{ role: "user", content: this.task },
+				],
+				temperature: 0,
+				max_tokens: 1024,
+			});
+
+			if (result.data.usage?.total_tokens) {
+				this.usage += result.data.usage.total_tokens;
+				token_log(result.data.usage.total_tokens);
+			}
+
+			const response = result.data.choices[0].message;
+			if (response) {
+				const lines = response.content
+					.split("\n")
+					.map((line) => line.trim())
+					.filter((line) => /\d+\./.test(line));
+
+				const regex = /(\d+)\. `(.*)` \((.*)\)/;
+
+				const plan: Plan = [];
+				for (const line of lines) {
+					const match = line.match(regex);
+					if (match) {
+						const [_all, _index, command, description] = match;
+						plan.push({ command, description });
+					}
+				}
+
+				return plan;
 			}
 
 			throw new Error("No response");

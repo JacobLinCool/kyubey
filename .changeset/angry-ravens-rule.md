@@ -1,0 +1,5 @@
+---
+"kyubey": minor
+---
+
+Plan mode
