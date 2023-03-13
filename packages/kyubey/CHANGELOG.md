@@ -1,5 +1,15 @@
 # kyubey
 
+## 1.0.0-dev.2
+
+### Minor Changes
+
+-   [`a4cd2d1`](https://github.com/JacobLinCool/kyubey/commit/a4cd2d193092694fd1951b7abe22fcbb8b6f5a9b) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Add ability to answer questions
+
+### Patch Changes
+
+-   [`7022d4e`](https://github.com/JacobLinCool/kyubey/commit/7022d4e3eded7afd4bef556e823025ff3dc52bcc) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Fix recursive .env file loader
+
 ## 1.0.0-dev.1
 
 ### Minor Changes
